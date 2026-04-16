@@ -27,6 +27,8 @@ function Navbar() {
           {user ? (
             <>
               <span className="navbar-user">Hi, {user.username}</span>
+              <Link to="/encrypt">Encrypt</Link>
+              <Link to="/my-ciphers">My Ciphers</Link>
               <button onClick={handleLogout} className="btn btn-logout">
                 Logout
               </button>

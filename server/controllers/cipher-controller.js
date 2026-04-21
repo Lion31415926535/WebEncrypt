@@ -1,12 +1,17 @@
 import { Router } from "express";
 import { requireAuth } from "../middleware/auth.js";
-import { createCipher, getCipherById } from "../models/ciphers.js";
+import { createCipher, getCipherById, getCiphersByUserId } from "../models/ciphers.js";
 
 const router = Router();
 
 // Gets all ciphers for a user
 router.get("/my-ciphers", requireAuth, async (req, res) => {
-
+    const ciphers = await getCiphersByUserId(req.user.id);
+    if (ciphers) {
+        res.json({ ciphers });
+    } else {
+        res.status(404).json({ error: "No ciphers found" });
+    }
 });
 
 // Decrypts a specific cipher

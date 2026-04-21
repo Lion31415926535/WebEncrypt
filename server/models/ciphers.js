@@ -23,3 +23,14 @@ export async function getCipherById(id, userId) {
         return null;
     }
 }
+
+export async function getCiphersByUserId(userId) {
+    const result = await pool.query(
+        "SELECT * FROM ciphers WHERE user_id = $1",
+        [userId]);
+    if (isAuthorized(userId, result.rows[0].user_id)) {
+        return result.rows;
+    } else {
+        return null;
+    }
+}

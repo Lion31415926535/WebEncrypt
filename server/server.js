@@ -7,6 +7,7 @@ import { create } from "express-handlebars";
 import { loadUser } from "./middleware/auth.js";
 
 import authController from "./controllers/auth.js";
+import cipherController from "./controllers/cipher-controller.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,6 +29,7 @@ app.use(loadUser);
 
 // API Routes
 app.use("/api/auth", authController);
+app.use("/api/ciphers", cipherController);
 
 // Serve the React app
 if (process.env.NODE_ENV === "production") {

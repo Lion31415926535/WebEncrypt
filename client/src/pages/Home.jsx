@@ -15,6 +15,11 @@ function Home() {
         Don't worry! Your plaintext is never stored, so you don't have to worry about your messages being leaked.
       </div>
       {user ? <Link to="/encrypt">Encrypt</Link> : <Link to="/login">Login to Encrypt</Link>}
+      <div>
+        Note: This website is for educational purposes only.
+        Do not use it to encrypt sensitive information.
+        Communication between the client and server is not secure and many of the algorithms use for encryption are not secure.
+      </div>
     </div>
   );
 }

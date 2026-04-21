@@ -80,3 +80,4 @@ The server will include several endpoints for ciphers:
 
 ## NOTES
 - Need to decide what characters are valid, and make sure to validate messages before encryption
+- Maybe include a page with information about each algorithm like how it works, how secure it is, etc.

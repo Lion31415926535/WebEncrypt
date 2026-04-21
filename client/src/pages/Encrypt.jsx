@@ -9,6 +9,17 @@ function Encrypt() {
 
     async function handleSubmit(e) {
         e.preventDefault();
+
+        const response = await fetch("/api/ciphers", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message, algorithm })
+        });
+
+        const cipher = await response.json();
+        console.log("Cipher created:", cipher);
     }
 
     return (

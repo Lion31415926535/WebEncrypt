@@ -1,10 +1,13 @@
 import { useRequireUser } from "../hooks/useRequireUser";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 function Encrypt() {
     const user = useRequireUser();
     const [message, setMessage] = useState("");
     const [algorithm, setAlgorithm] = useState("caesar");
+
+    const navigate = useNavigate();
 
 
     async function handleSubmit(e) {
@@ -20,6 +23,13 @@ function Encrypt() {
 
         const cipher = await response.json();
         console.log("Cipher created:", cipher);
+
+        if (response.ok) {
+            navigate(`/cipher/${cipher.id}`);
+        } else {
+            console.error("Failed to create cipher");
+        }
+
     }
 
     return (

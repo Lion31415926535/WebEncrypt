@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { requireAuth } from "../middleware/auth.js";
-import { createCipher, getCipherById, getCiphersByUserId } from "../models/ciphers.js";
+import { createCipher, getCipherById, getCiphersByUserId, deleteCipher } from "../models/ciphers.js";
 
 const router = Router();
 
@@ -16,7 +16,9 @@ router.get("/my-ciphers", requireAuth, async (req, res) => {
 
 // Decrypts a specific cipher
 router.get("/:id/decrypt", requireAuth, async (req, res) => {
+    const cipher = await getCipherById(req.params.id, req.user.id);
 
+    // Add function to actually decrypt the data
 });
 
 // Gets a specific cipher
@@ -39,7 +41,12 @@ router.post("/", requireAuth, async (req, res) => {
 
 // Deletes a cipher
 router.delete("/:id", requireAuth, async (req, res) => {
-
+    const deleted = await deleteCipher(req.params.id, req.user.id);
+    if (deleted) {
+        res.json({ message: "Cipher deleted successfully" });
+    } else {
+        res.status(404).json({ error: "Cipher not found" });
+    }
 });
 
 export default router;

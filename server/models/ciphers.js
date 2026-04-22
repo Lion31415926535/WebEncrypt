@@ -34,3 +34,13 @@ export async function getCiphersByUserId(userId) {
         return null;
     }
 }
+
+export async function deleteCipher(id, userId) {
+    if (isAuthorized(userId, (await getCipherById(id, userId)).user_id)) {
+        await pool.query(
+            "DELETE FROM ciphers WHERE id = $1",
+            [id]);
+        return true;
+    }
+    return false;
+}

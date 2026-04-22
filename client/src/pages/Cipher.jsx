@@ -1,9 +1,10 @@
 import { useRequireUser } from "../hooks/useRequireUser";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 
 function Cipher() {
     const user = useRequireUser();
+    const navigate = useNavigate();
     const { id } = useParams();
 
     const [cipher, setCipher] = useState("");
@@ -28,6 +29,15 @@ function Cipher() {
         setIsDecrypted(true);
     }
 
+    async function handleDelete() {
+        const response = await fetch(`/api/ciphers/${id}`, {
+            method: "DELETE"
+        });
+        if (response.ok) {
+            navigate("/my-ciphers");
+        }
+    }
+
 
     return (
         <div>
@@ -41,6 +51,7 @@ function Cipher() {
             {!isDecrypted && (
                 <button onClick={handleDecrypt}>Decrypt</button>
             )}
+            <button onClick={handleDelete}>Delete</button>
         </div>
     )
 }

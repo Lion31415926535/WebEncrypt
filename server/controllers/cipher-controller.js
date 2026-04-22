@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { requireAuth } from "../middleware/auth.js";
 import { createCipher, getCipherById, getCiphersByUserId, deleteCipher } from "../models/ciphers.js";
+import { encryptCaesar } from "../models/caesar.js";
 
 const router = Router();
 
@@ -34,8 +35,13 @@ router.get("/:id", requireAuth, async (req, res) => {
 // Creates a new cipher
 router.post("/", requireAuth, async (req, res) => {
     // Add function to actually encrypt the data
-    
-    const cipher = await createCipher(req.user.id, req.body.message, req.body.algorithm, 12345);
+    const { ciphertext, key } = encryptCaesar(req.body.message);
+
+    if (!ciphertext || !key) {
+        return res.status(400).json({ error: "Invalid input" });
+    }
+
+    const cipher = await createCipher(req.user.id, ciphertext, req.body.algorithm, key);
     res.status(201).json(cipher);
 });
 

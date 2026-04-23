@@ -2,6 +2,7 @@ import { Router } from "express";
 import { requireAuth } from "../middleware/auth.js";
 import { createCipher, getCipherById, getCiphersByUserId, deleteCipher } from "../models/ciphers.js";
 import { encryptCaesar, decryptCaesar } from "../models/caesar.js";
+import { encryptHill, decryptHill } from "../models/hill.js";
 
 const router = Router();
 
@@ -22,6 +23,8 @@ router.get("/:id/decrypt", requireAuth, async (req, res) => {
     let message = "";
     if (cipher.algorithm === "caesar") {
         message = decryptCaesar(cipher.ciphertext, cipher.key);
+    } else if (cipher.algorithm === "hill") {
+        message = decryptHill(cipher.ciphertext, cipher.key);
     }
     res.json({ message });
 });
@@ -42,6 +45,8 @@ router.post("/", requireAuth, async (req, res) => {
     let key = "";
     if (req.body.algorithm === "caesar") {
         ({ ciphertext, key } = encryptCaesar(req.body.message));
+    } else if (req.body.algorithm === "hill") {
+        ({ ciphertext, key } = encryptHill(req.body.message));
     }
 
     if (!ciphertext || !key) {

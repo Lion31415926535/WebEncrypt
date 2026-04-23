@@ -2,12 +2,18 @@ import { matrix, inv, det } from "mathjs";
 
 export function encryptHill(message) {
     message = message.toLowerCase();
+    
+    // Pads message with spaces until its length is divisible by 3
+    while (message.length % 3 !== 0) {
+        message += " ";
+    }
 
     if (!validateText(message)) {
         return null
     }
 
     const key = generateKey();
+    const messageMatrix = parseMessage(message);
 
 
 
@@ -42,4 +48,33 @@ function generateKey() {
     }
 
     return key;
+}
+
+// Parses the message into a 3xn matrix
+function parseMessage(message) {
+    let outerArray = [];
+    // Iterates by three through message
+    for (let i=0; i < message.length; i += 3) {
+        let innerArray = [];
+        
+        // Calculates code for next three characters
+        for (let j=0; j<3; j++) {
+            const character = message.charAt(i + j);
+            let charCode = 0;
+            if (character === " ") {
+                charCode = 26
+            } else if (character === ".") {
+                charCode = 27;
+            } else if (character === "?") {
+                charCode = 28;
+            } else {
+                charCode = character.charCodeAt(0) - 97;
+            }
+
+            innerArray.push(charCode);
+        }
+        outerArray.push(innerArray);
+    }
+
+    return matrix(outerArray);
 }

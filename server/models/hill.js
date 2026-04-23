@@ -1,4 +1,4 @@
-import { matrix, inv, det } from "mathjs";
+import { matrix, inv, det, transpose, multiply } from "mathjs";
 
 export function encryptHill(message) {
     message = message.toLowerCase();
@@ -12,12 +12,16 @@ export function encryptHill(message) {
         return null
     }
 
-    const key = generateKey();
+    const keyMatrix = generateKey();
     const messageMatrix = parseMessage(message);
 
+    const cipherMatrix = multiply(keyMatrix, messageMatrix);
 
+    const ciphertextMatrix = codeToChar(transpose(cipherMatrix)._data); // Converts each entry of cipher into characters
+    const ciphertext = matrixToText(ciphertextMatrix);
+    const key = matrixToText(keyMatrix._data);
 
-
+    return { ciphertext, key }
 }
 
 export function decryptHill(ciphertext, key) {
@@ -34,7 +38,7 @@ function validateText(message) {
     return true;
 }
 
-// Generates a 3x3 matrix for the key
+// Generates a 3x3 key for the matrix
 function generateKey() {
     let key = matrix([[0,0,0],[0,0,0],[0,0,0]]);
 
@@ -76,5 +80,35 @@ function parseMessage(message) {
         outerArray.push(innerArray);
     }
 
-    return matrix(outerArray);
+    return transpose(matrix(outerArray));
 }
+
+// Takes a 2d array and returns a string of the contents of its rows
+function matrixToText(matrixData) {
+    let text = "";
+    for (let i=0; i < matrixData.length; i++) {
+        for (let j=0; j < matrixData[i].length; j++) {
+            text += matrixData[i][j];
+        }
+    }
+
+    return text;
+}
+
+// Iterates through a 2d array and converts character codes into letters
+function codeToChar(matrixData) {
+    for (let i=0; i < matrixData.length; i++) {
+        for (let j=0; j < matrixData[i].length; j++) {
+            matrixData[i][j] = String.fromCharCode(matrixData[i][j]);
+        }
+    }
+    return matrixData;
+}
+
+/*
+TODO: 
+Decryption:
+- Convert key and cipher into matrices
+- Multiply by inverse (and round) to get plaintext
+- Return plaintext as text
+*/

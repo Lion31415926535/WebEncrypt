@@ -15,6 +15,8 @@ export function encryptCaesar(message) {
             ciphertext += ".";
         } else if (char === "?") {
             ciphertext += "?";
+        } else if (char >= "0" && char <= "9") {
+            ciphertext += char;
         } else {
             ciphertext += caesarShift(char, key);
         }
@@ -25,7 +27,23 @@ export function encryptCaesar(message) {
 }
 
 export function decryptCaesar(ciphertext, key) {
-    
+    let message = "";
+
+    for (let char of ciphertext) {
+        if (char === " ") {
+            message += " ";
+        } else if (char === ".") {
+            message += ".";
+        } else if (char === "?") {
+            message += "?";
+        } else if (char >= "0" && char <= "9") {
+            message += char;
+        } else {
+            message += caesarShift(char, 26 - key);
+        }
+    }
+
+    return message;
 }
 
 // Checks to make sure message only contains valid characters

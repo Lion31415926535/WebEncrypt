@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { requireAuth } from "../middleware/auth.js";
 import { createCipher, getCipherById, getCiphersByUserId, deleteCipher } from "../models/ciphers.js";
-import { encryptCaesar } from "../models/caesar.js";
+import { encryptCaesar, decryptCaesar } from "../models/caesar.js";
 
 const router = Router();
 
@@ -20,6 +20,8 @@ router.get("/:id/decrypt", requireAuth, async (req, res) => {
     const cipher = await getCipherById(req.params.id, req.user.id);
 
     // Add function to actually decrypt the data
+    const message = decryptCaesar(cipher.ciphertext, cipher.key);
+    res.json({ message });
 });
 
 // Gets a specific cipher

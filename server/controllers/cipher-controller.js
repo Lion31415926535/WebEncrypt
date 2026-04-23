@@ -19,8 +19,10 @@ router.get("/my-ciphers", requireAuth, async (req, res) => {
 router.get("/:id/decrypt", requireAuth, async (req, res) => {
     const cipher = await getCipherById(req.params.id, req.user.id);
 
-    // Add function to actually decrypt the data
-    const message = decryptCaesar(cipher.ciphertext, cipher.key);
+    let message = "";
+    if (cipher.algorithm === "caesar") {
+        message = decryptCaesar(cipher.ciphertext, cipher.key);
+    }
     res.json({ message });
 });
 
@@ -36,8 +38,11 @@ router.get("/:id", requireAuth, async (req, res) => {
 
 // Creates a new cipher
 router.post("/", requireAuth, async (req, res) => {
-    // Add function to actually encrypt the data
-    const { ciphertext, key } = encryptCaesar(req.body.message);
+    let ciphertext = "";
+    let key = "";
+    if (req.body.algorithm === "caesar") {
+        ({ ciphertext, key } = encryptCaesar(req.body.message));
+    }
 
     if (!ciphertext || !key) {
         return res.status(400).json({ error: "Invalid input" });

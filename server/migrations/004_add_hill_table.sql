@@ -1,8 +1,7 @@
-CREATE TABLE IF NOT EXISTS ciphers (
+CREATE TABLE IF NOT EXISTS hill (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    ciphertext TEXT NOT NULL,
-    algorithm VARCHAR(255) NOT NULL,
-    key TEXT NOT NULL,
+    ciphertext TEXT[][] NOT NULL,
+    key INTEGER[][] NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

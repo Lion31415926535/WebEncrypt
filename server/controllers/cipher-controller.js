@@ -22,9 +22,9 @@ router.get("/:id/decrypt", requireAuth, async (req, res) => {
 
     let message = "";
     if (cipher.algorithm === "caesar") {
-        message = decryptCaesar(cipher.ciphertext, cipher.key);
+        message = decryptCaesar(cipher.cipher_data.ciphertext, cipher.cipher_data.key);
     } else if (cipher.algorithm === "hill") {
-        message = decryptHill(cipher.ciphertext, cipher.key);
+        message = decryptHill(cipher.cipher_data.ciphertext, cipher.cipher_data.key);
     }
     res.json({ message });
 });
@@ -53,7 +53,7 @@ router.post("/", requireAuth, async (req, res) => {
         return res.status(400).json({ error: "Invalid input" });
     }
 
-    const cipher = await createCipher(req.user.id, ciphertext, req.body.algorithm, key);
+    const cipher = await createCipher(req.user.id, req.body.algorithm, { ciphertext, key });
     res.status(201).json(cipher);
 });
 

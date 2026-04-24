@@ -21,7 +21,7 @@ function MyCiphers() {
             <h2>My Ciphers</h2>
             {ciphers.map(cipher => (
                 <div key={cipher.id}>
-                    <Link to={`/cipher/${cipher.id}`}>{cipher.algorithm} - {cipher.ciphertext}</Link>
+                    <Link to={`/cipher/${cipher.id}`}>{cipher.algorithm} - {cipher.cipher_data.ciphertext}</Link>
                 </div>
             ))}
         </div>

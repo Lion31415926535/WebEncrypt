@@ -15,7 +15,7 @@ function Cipher() {
         async function fetchCipher() {
             const response = await fetch(`/api/ciphers/${id}`);
             const data = await response.json();
-            setCipher(data.ciphertext);
+            setCipher(data.cipher_data.ciphertext);
             setAlgorithm(data.algorithm);
         }
 

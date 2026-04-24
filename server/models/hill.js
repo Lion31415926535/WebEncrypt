@@ -12,16 +12,13 @@ export function encryptHill(message) {
         return null
     }
 
-    const keyMatrix = generateKey();
+    let key = generateKey();
     const messageMatrix = parseMessage(message);
 
-    const cipherMatrix = multiply(keyMatrix, messageMatrix);
+    const cipherMatrix = multiply(key, messageMatrix);
 
-    // Gets cipher matrix into text form
-    const ciphertextMatrix = codeToChar(transpose(cipherMatrix)._data); // Converts each entry of cipher into characters
-    const ciphertext = matrixToText(ciphertextMatrix);
-
-    const key = matrixToText(keyMatrix._data, true);
+    key = key._data;
+    const ciphertext = codeToChar(cipherMatrix._data);
 
     return { ciphertext, key }
 }
@@ -83,22 +80,6 @@ function parseMessage(message) {
     }
 
     return transpose(matrix(outerArray));
-}
-
-// Takes a 2d array and returns a string of the contents of its rows
-function matrixToText(matrixData, isKey) {
-    let text = "";
-    for (let i=0; i < matrixData.length; i++) {
-        for (let j=0; j < matrixData[i].length; j++) {
-            if (isKey && matrixData[i][j] < 10) {
-                text += "0" + matrixData[i][j]
-            } else {
-                text += matrixData[i][j];
-            }
-        }
-    }
-
-    return text;
 }
 
 // Iterates through a 2d array and converts character codes into letters

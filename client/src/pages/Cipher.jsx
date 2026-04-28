@@ -40,18 +40,22 @@ function Cipher() {
 
 
     return (
-        <div>
+        <div className="card" style={{ maxWidth: "600px", margin: "2rem auto" }}>
             <h2>Welcome to the Cipher Page</h2>
-            <div>
-                Message: {cipher}
+            <div style={{ marginBottom: "1.5rem" }}>
+                <p style={{ marginBottom: "0.75rem" }}>
+                    <strong>Message:</strong> {cipher}
+                </p>
+                <p>
+                    <strong>Encryption Algorithm:</strong> {algorithm}
+                </p>
             </div>
-            <div>
-                Encryption Algorithm: {algorithm}
+            <div style={{ display: "flex", gap: "1rem" }}>
+                {!isDecrypted && (
+                    <button onClick={handleDecrypt} className="btn btn-primary">Decrypt</button>
+                )}
+                <button onClick={handleDelete} className="btn btn-danger">Delete</button>
             </div>
-            {!isDecrypted && (
-                <button onClick={handleDecrypt}>Decrypt</button>
-            )}
-            <button onClick={handleDelete}>Delete</button>
         </div>
     )
 }

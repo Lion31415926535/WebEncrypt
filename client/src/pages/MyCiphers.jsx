@@ -19,11 +19,13 @@ function MyCiphers() {
     return (
         <div>
             <h2>My Ciphers</h2>
-            {ciphers.map(cipher => (
-                <div key={cipher.id}>
-                    <Link to={`/cipher/${cipher.id}`}>{cipher.algorithm} - {cipher.cipher_data.ciphertext}</Link>
-                </div>
-            ))}
+            <div className="ciphers-list">
+                {ciphers.map(cipher => (
+                    <div key={cipher.id} className="card">
+                        <Link to={`/cipher/${cipher.id}`}>{cipher.algorithm} - {cipher.cipher_data.ciphertext}</Link>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }

@@ -24,7 +24,16 @@ export function encryptHill(message) {
 }
 
 export function decryptHill(ciphertext, key) {
+    key = matrix(key);
 
+    ciphertext = matrix(charToCode(ciphertext));
+
+    let plaintext = multiply(inv(key), ciphertext);
+    plaintext._data = roundMatrix(plaintext._data);
+
+    plaintext = unparseMessage(plaintext._data);
+
+    return plaintext;
 }
 
 function validateText(message) {
@@ -79,7 +88,31 @@ function parseMessage(message) {
         outerArray.push(innerArray);
     }
 
+    console.log("Parsing: " + outerArray);
     return transpose(matrix(outerArray));
+}
+
+function unparseMessage(matrixData) {
+    matrixData = transpose(matrixData);
+
+    let message = "";
+    for (let i=0; i < matrixData.length; i++) {
+        for (let j=0; j < matrixData[i].length; j++) {
+            const charValue = matrixData[i][j];
+
+            if (charValue === 26) {
+                message += " ";
+            } else if (charValue === 27) {
+                message += "."
+            } else if (charValue === 28) {
+                message += "?"
+            } else {
+                message += String.fromCharCode(charValue + 97);
+            }
+        }
+    }
+
+    return message;
 }
 
 // Iterates through a 2d array and converts character codes into letters
@@ -92,10 +125,20 @@ function codeToChar(matrixData) {
     return matrixData;
 }
 
-/*
-TODO: 
-Decryption:
-- Convert key and cipher into matrices
-- Multiply by inverse (and round) to get plaintext
-- Return plaintext as text
-*/
+function charToCode(matrixData) {
+    for (let i=0; i < matrixData.length; i++) {
+        for (let j=0; j < matrixData[i].length; j++) {
+            matrixData[i][j] = matrixData[i][j].codePointAt(0);
+        }
+    }
+    return matrixData;
+}
+
+function roundMatrix(matrixData) {
+    for (let i=0; i < matrixData.length; i++) {
+        for (let j=0; j < matrixData[i].length; j++) {
+            matrixData[i][j] = Math.round(matrixData[i][j]);
+        }
+    }
+    return matrixData;
+}

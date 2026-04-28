@@ -1,9 +1,7 @@
 export function encryptCaesar(message) {
-     message = message.toLowerCase();
+    message = message.toLowerCase();
 
-    if (!validateText(message)) {
-        return null;
-    }
+    message = validateText(message);
 
     const key = generateKey();
     let ciphertext = "";
@@ -46,15 +44,18 @@ export function decryptCaesar(ciphertext, key) {
     return message;
 }
 
-// Checks to make sure message only contains valid characters
+// Replaces any invalid characters with ?
 function validateText(message) {
     const validChars = "abcdefghijklmnopqrstuvwxyz1234567890. ?";
+    let newMessage = "";
     for (let char of message) {
-        if (!validChars.includes(char)) {
-            return false;
+        if (validChars.includes(char)) {
+            newMessage += char;
+        } else {
+            newMessage += "?";
         }
     }
-    return true;
+    return newMessage;
 }
 
 function generateKey() {

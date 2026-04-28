@@ -8,9 +8,7 @@ export function encryptHill(message) {
         message += " ";
     }
 
-    if (!validateText(message)) {
-        return null
-    }
+    message = validateText(message);
 
     let key = generateKey();
     const messageMatrix = parseMessage(message);
@@ -36,14 +34,18 @@ export function decryptHill(ciphertext, key) {
     return plaintext;
 }
 
+// Replaces any invalid characters with ?
 function validateText(message) {
-    const validChars = "abcdefghijklmnopqrstuvwxyz1234567890. ?";
+    const validChars = "abcdefghijklmnopqrstuvwxyz. ?";
+    let newMessage = "";
     for (let char of message) {
-        if (!validChars.includes(char)) {
-            return false;
+        if (validChars.includes(char)) {
+            newMessage += char;
+        } else {
+            newMessage += "?";
         }
     }
-    return true;
+    return newMessage;
 }
 
 // Generates a 3x3 key for the matrix

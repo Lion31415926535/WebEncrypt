@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import Encrypt from "./pages/Encrypt";
 import Cipher from "./pages/Cipher";
 import MyCiphers from "./pages/MyCiphers";
+import About from "./pages/About";
 
 function App() {
   const { loading } = useAuth();
@@ -26,6 +27,7 @@ function App() {
           <Route path="/encrypt" element={<Encrypt />} />
           <Route path="/cipher/:id" element={<Cipher />} />
           <Route path="/my-ciphers" element={<MyCiphers />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </main>
     </>

@@ -1,5 +1,4 @@
 import { useRequireUser } from "../hooks/useRequireUser";
-import logo from "../assets/logo.png";
 import { useAuth } from "../hooks/useAuth";
 import { Link } from "react-router";
 
